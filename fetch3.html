@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Information</title>
+</head>
+<body>
+
+<h1>Weather Information</h1>
+<p>Enter a city name to get the weather details:</p>
+<input type="text" id="city" placeholder="Enter city" />
+<button onclick="getWeather()">Get Weather</button>
+
+<div id="weather-details">
+    <h2>Weather Details:</h2>
+    <p id="city-name"></p>
+    <p id="min-temp"></p>
+    <p id="max-temp"></p>
+    <p id="humidity"></p>
+</div>
+
+<script>
+    const apiKey = '409d016a6b5935f08a59b3a8a866ac7e';  // Replace with your OpenWeatherMap API key
+
+    function getWeather() {
+        const city = document.getElementById('city').value;
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+
+        // Fetch weather data from OpenWeatherMap
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                // Extract required weather information
+                const cityName = data.name;
+                const minTemp = data.main.temp_min;
+                const maxTemp = data.main.temp_max;  // Extract maximum temperature
+                const humidity = data.main.humidity;
+
+                // Display weather details
+                document.getElementById('city-name').innerText = `City: ${cityName}`;
+                document.getElementById('min-temp').innerText = `Minimum Temperature: ${minTemp}°C`;
+                document.getElementById('max-temp').innerText = `Maximum Temperature: ${maxTemp}°C`; // Display maximum temperature
+                document.getElementById('humidity').innerText = `Humidity: ${humidity}%`;
+            })
+            .catch(error => {
+                console.error('Error fetching weather data:', error);
+                alert('Error fetching data. Please try again later.');
+            });
+    }
+</script>
+
+</body>
+</html>
